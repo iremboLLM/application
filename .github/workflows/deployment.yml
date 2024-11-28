@@ -24,7 +24,7 @@ jobs:
         with:
           switches: -avzr --delete
           path: ./*
-          remote_path: "/home/my-app"
+          remote_path: "/home/ubuntu"
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: "ubuntu"
           remote_key: "${{ secrets.SSH_PRIVATE_KEY }}"
@@ -56,7 +56,7 @@ jobs:
             export NEXT_PUBLIC_API_URL="${{ secrets.NEXT_PUBLIC_API_URL }}"
 
             # Navigate to the directory where the code is deployed
-            cd /home/my-app/
+            cd /home/ubuntu
 
             ls
 

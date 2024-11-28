@@ -35,7 +35,7 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/temp_key
           chmod 600 /tmp/temp_key
-          ssh -o StrictHostKeyChecking=no -i /tmp/temp_key ubuntu@$34.234.143.227 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i /tmp/temp_key ubuntu@$34.234.143.227 '
             # Set environment variables from GitHub secrets
             export DEFAULT_MODEL="${{ secrets.DEFAULT_MODEL }}"
             export SUPABASE_DB_URL="${{ secrets.SUPABASE_DB_URL }}"
@@ -72,4 +72,4 @@ jobs:
 
             # Optionally, you can check if the process is running
             ps aux | grep "npm run start"
-          EOF
+          '

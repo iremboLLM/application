@@ -26,7 +26,9 @@ jobs:
 
       - name: SSH and start the application on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@$34.234.143.227 << 'EOF'
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/temp_key
+          chmod 600 /tmp/temp_key
+          ssh -o StrictHostKeyChecking=no -i /tmp/temp_key ubuntu@$34.234.143.227 << 'EOF'
             # Set environment variables from GitHub secrets
             export DEFAULT_MODEL="${{ secrets.DEFAULT_MODEL }}"
             export SUPABASE_DB_URL="${{ secrets.SUPABASE_DB_URL }}"

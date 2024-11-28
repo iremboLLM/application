@@ -58,6 +58,8 @@ jobs:
             # Navigate to the directory where the code is deployed
             cd /var/www/my-app/
 
+            ls
+
             # Build the project (if necessary, already done above)
             npm run build
 

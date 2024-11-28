@@ -24,6 +24,13 @@ jobs:
           remote_user: "ubuntu"
           remote_key: "${{ secrets.SSH_PRIVATE_KEY }}"
 
+      - name: Add EC2 fingerprint to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          chmod 700 ~/.ssh
+          chmod 644 ~/.ssh/known_hosts
+
       - name: SSH and start the application on EC2
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/temp_key

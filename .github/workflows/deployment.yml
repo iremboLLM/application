@@ -19,9 +19,6 @@ jobs:
           npm ci
           npm i yarn
 
-      - name: Build the project
-        run: npm run build
-
       - name: Rsync code to EC2 instance
         uses: burnett01/rsync-deployments@5.1
         with:

@@ -1,0 +1,70 @@
+name: Deploy and Run on AWS EC2
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Rsync code to EC2 instance
+        uses: burnett01/rsync-deployments@5.1
+        with:
+          switches: -avzr --delete
+          path: ./*
+          remote_path: "${{ secrets.SSH_REMOTE_PATH }}"
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: "${{ secrets.SSH_USERNAME }}"
+          remote_key: "${{ secrets.SSH_PRIVATE_KEY }}"
+
+      - name: SSH and start the application on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@${{ secrets.SSH_HOST }} << 'EOF'
+            # Set environment variables from GitHub secrets
+            export DEFAULT_MODEL="${{ secrets.DEFAULT_MODEL }}"
+            export SUPABASE_DB_URL="${{ secrets.SUPABASE_DB_URL }}"
+            export SUPABASE_URL="${{ secrets.SUPABASE_URL }}"
+            export SUPABASE_KEY="${{ secrets.SUPABASE_KEY }}"
+            export TAVILY_API_KEY="${{ secrets.TAVILY_API_KEY }}"
+            export OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}"
+            export LANGCHAIN_TRACING_V2="${{ secrets.LANGCHAIN_TRACING_V2 }}"
+            export LANGCHAIN_ENDPOINT="${{ secrets.LANGCHAIN_ENDPOINT }}"
+            export LANGCHAIN_API_KEY="${{ secrets.LANGCHAIN_API_KEY }}"
+            export LANGCHAIN_PROJECT="${{ secrets.LANGCHAIN_PROJECT }}"
+            export PROJECT="${{ secrets.PROJECT }}"
+            export MONGO_URL="${{ secrets.MONGO_URL }}"
+            export AWS_ACCESS_KEY="${{ secrets.AWS_ACCESS_KEY }}"
+            export AWS_SECRET_KEY="${{ secrets.AWS_SECRET_KEY }}"
+            export AWS_REGION="${{ secrets.AWS_REGION }}"
+
+            export NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}"
+            export CLERK_SECRET_KEY="${{ secrets.CLERK_SECRET_KEY }}"
+            export NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL="${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL }}"
+            export NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL="${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL }}"
+            export NEXT_PUBLIC_API_URL="${{ secrets.NEXT_PUBLIC_API_URL }}"
+
+            # Navigate to the directory where the code is deployed
+            cd ${{ secrets.SSH_REMOTE_PATH }}
+
+            # Build the project (if necessary, already done above)
+            npm run build
+
+            # Start the application in the background
+            nohup npm run start > app.log 2>&1 &
+
+            # Optionally, you can check if the process is running
+            # ps aux | grep "npm run start"
+          EOF

@@ -1,0 +1,33 @@
+{
+  "name": "irembollmapp",
+  "version": "1.0.0",
+  "description": "This is the IremboLLM chatbot, designed to assist users with questions about Irembo services and guide them through applying for various services available on the platform.",
+  "main": "index.js",
+  "scripts": {
+    "start-dev:backend": "cd backend && bash -c 'source ./venv/bin/activate && ./start-reload.sh'",
+    "start-dev:frontend": "cd frontend && yarn dev",
+    "start-prod:backend": "cd backend && bash -c 'source ./venv/bin/activate && ./start-prod.sh'",
+    "start-prod:frontend": "cd frontend && yarn start",
+    "dev": "concurrently \"npm run start-dev:backend\" \"npm run start-dev:frontend\"",
+    "build:frontend": "cd frontend && yarn install && yarn build",
+    "build:backend": "cd backend && python3 -m venv venv && bash -c 'source ./venv/bin/activate && pip install -r requirements.txt && python setup.py install'",
+    "build": "concurrently \"npm run build:frontend\" \"npm run build:backend\"",
+    "start": "concurrently \"npm run start-prod:backend\" \"npm run start-prod:frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/iremboLLM/application.git"
+  },
+  "keywords": [
+    "iremboLLM"
+  ],
+  "author": "dirac156 damilare landelin kevin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iremboLLM/application/issues"
+  },
+  "homepage": "https://github.com/iremboLLM/application#readme",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

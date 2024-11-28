@@ -1,0 +1,32 @@
+"""_summary_"""
+
+from typing import Optional
+from pydantic import BaseModel
+
+from app.domain.models.task_model import TaskExtractionResponse
+
+
+class AgentRequest(BaseModel):
+    """
+    A model representing a request made by an agent.
+
+    Attributes:
+        query (str): The query string provided by the agent.
+    """
+
+    query: str
+    agent_mode: Optional[str]
+    thread_id: str
+
+
+class AgentResponse(BaseModel):
+    """
+    A model representing a response returned by an agent.
+
+    Attributes:
+        response (str): The response string returned by the agent.
+    """
+
+    response: str
+    tasks_to_complete: TaskExtractionResponse
+    agent_mode: Optional[str]

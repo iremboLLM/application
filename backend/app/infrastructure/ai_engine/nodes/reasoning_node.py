@@ -16,6 +16,10 @@ from app.infrastructure.ai_engine.tools.apply_for_foreign_document_tool import (
     ApplyForForeignDocumentTool,
 )
 
+from app.config.settings import Settings
+
+app_setting = Settings()
+
 # from pydantic import BaseModel, ValidationError
 
 # from langchain_community.tools.tavily_search.tool import TavilySearchResults
@@ -147,5 +151,5 @@ class ReasoningNode:
 
 
 tools = [ApplyForForeignDocumentTool]
-llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+llm = ChatOpenAI(model_name=app_setting.OPENAI_MODEL, temperature=0)
 reasoning_node = ReasoningNode(reasoning_prompt | llm.bind_tools(tools=tools))

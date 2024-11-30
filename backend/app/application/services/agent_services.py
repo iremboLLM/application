@@ -47,7 +47,8 @@ class AgentService:
 
         messages = state["messages"]
         response = messages[-1].content
-        tasks_to_complete = state["tasks_to_complete"]
+        # tasks_to_complete = state["tasks_to_complete"]
+        tasks_to_complete = {"tasks": [], "intent": "", "goal": ""}
 
         return {
             "response": response,

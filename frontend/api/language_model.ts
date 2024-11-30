@@ -4,13 +4,9 @@ import axios from "axios";
 class LanguageModelAPI {
   async generate(query: Query) {
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/agent`,
-        query,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(`/api/agent`, query, {
+        withCredentials: true,
+      });
       return response.data as Response;
     } catch (error) {
       console.error(error);

@@ -20,12 +20,11 @@ from langchain.text_splitter import CharacterTextSplitter
 
 
 # Folder containing the PDFs
-DOCS_FOLDER = "/home/dirac-murairi/Documents/CMU/fall_2024/capstone/iremboLLMApp/backend/docs/english"
-
-# Initialize Chroma client and embeddings
-embeddings = OpenAIEmbeddings(
-    # api_key="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"
+DOCS_FOLDER = os.path.join(
+    os.path.dirname(__file__), "..", "..", "..", "..", "docs", "english"
 )
+# Initialize Chroma client and embeddings
+embeddings = OpenAIEmbeddings()
 vector_store = Chroma(
     collection_name="english",
     embedding_function=embeddings,

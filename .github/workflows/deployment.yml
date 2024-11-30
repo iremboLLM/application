@@ -65,8 +65,5 @@ jobs:
             npm run build
 
             # Start the application in the background
-            nohup npm run start > app.log 2>&1 &
-
-            # Optionally, you can check if the process is running
-            ps aux | grep "npm run start"
+            pm2 start ecosystem.config.js
           '

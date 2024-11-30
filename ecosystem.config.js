@@ -14,7 +14,12 @@ module.exports = {
       cwd: "./backend", // Set the working directory
       interpreter: "bash", // Use bash for the script
       watch: true, // Enable watch mode
-      ignore_watch: ["venv", "logs"], // Ignore unnecessary folders
+      ignore_watch: [
+        "venv",
+        "logs",
+        "chroma_langchain_db",
+        "graph_representation.png",
+      ], // Ignore unnecessary folders
     },
   ],
 };

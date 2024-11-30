@@ -24,18 +24,15 @@ jobs:
           remote_user: "ubuntu"
           remote_key: "${{ secrets.SSH_PRIVATE_KEY }}"
 
-      - name: Add EC2 fingerprint to known hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-          chmod 700 ~/.ssh
-          chmod 644 ~/.ssh/known_hosts
-
       - name: SSH and start the application on EC2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: "ubuntu"
+
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/temp_key
-          chmod 600 /tmp/temp_key
-          ssh -o StrictHostKeyChecking=no -i /tmp/temp_key ubuntu@$34.234.143.227 '
+          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${SSH_USER}@$${SSH_HOST}'
             # Set environment variables from GitHub secrets
             export DEFAULT_MODEL="${{ secrets.DEFAULT_MODEL }}"
             export SUPABASE_DB_URL="${{ secrets.SUPABASE_DB_URL }}"

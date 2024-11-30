@@ -2,8 +2,8 @@ module.exports = {
   apps: [
     {
       name: "irembo-frontend",
-      script: "yarn",
-      args: "start",
+      script: "npm",
+      args: "run start",
       cwd: "./frontend", // Set the working directory
       watch: true, // Enable watch mode
       ignore_watch: ["node_modules", "logs"], // Ignore unnecessary folders

@@ -45,13 +45,23 @@ class AgentService:
             request.query, request.agent_mode, request.thread_id
         )
 
-        messages = state["messages"]
-        response = messages[-1].content
-        # tasks_to_complete = state["tasks_to_complete"]
-        tasks_to_complete = {"tasks": [], "intent": "", "goal": ""}
+        # print(state["options"])
+        # print(state["citation"])
+        # print(state["response"])
+        # print(state["form"])
+        # print(state["tasks"])
+        # print(state["messages"])
+
+        # messages = state["messages"]
+        # # response = messages[-1].content
 
         return {
-            "response": response,
             "agent_mode": request.agent_mode,
-            "tasks_to_complete": tasks_to_complete,
+            "options": state["options"],
+            "citation": state["citation"],
+            "response": state["response"],
+            # "form": state["form"],
+            "tasks": state["tasks"],
+            "messages": state["messages"],
+            "text": state["messages"][-1].content,
         }

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Task, TaskStatus } from "@/lib/types";
 
 interface TaskItemProps {
-  task: Task;
+  task: string;
   index: number;
 }
 
@@ -10,10 +9,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
   return (
     <div
       id="task"
-      className={`flex justify-between items-center border-b border-slate-200 py-3 px-2 border-l-4 ${
-        task.status === TaskStatus.DONE
-          ? "border-l-indigo-300 bg-indigo-100"
-          : "border-l-transparent"
+      className={`flex justify-between items-center border-b border-slate-200 py-5 px-2 border-l-4 ${
+        !task ? "border-l-indigo-300 bg-indigo-100" : "border-l-transparent"
       }`}
     >
       <div className="inline-flex items-center space-x-2">
@@ -52,12 +49,10 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
         </div> */}
         <div
           className={`${
-            task.status === TaskStatus.DONE
-              ? "text-slate-500 line-through"
-              : "text-slate-700"
+            !task ? "text-slate-500 line-through" : "text-slate-700"
           }`}
         >
-          {task.description}
+          {task}
         </div>
       </div>
       {/* <div>
@@ -81,7 +76,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
 };
 
 interface PaginatedTaskListProps {
-  tasks: Task[];
+  tasks: string[];
   itemsPerPage?: number;
 }
 
@@ -109,7 +104,7 @@ const PaginatedTaskList: React.FC<PaginatedTaskListProps> = ({
     <div>
       <div>
         {currentTasks.map((task, index) => (
-          <TaskItem key={task.task_id} task={task} index={index} />
+          <TaskItem key={index} task={task} index={index} />
         ))}
       </div>
       <div className="flex justify-between items-center mt-4">

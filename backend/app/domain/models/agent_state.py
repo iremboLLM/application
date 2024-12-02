@@ -17,3 +17,8 @@ class AgentState(TypedDict):
     language: str
     should_complete_tasks: Optional[bool]
     tasks_to_complete: Optional[Dict[str, Optional[any]]]
+    tasks: list
+    form: any
+    citation: str
+    options: list
+    response: str

@@ -2,7 +2,7 @@
 "use client";
 
 import { useLanguageModelApi } from "@/hooks/use-language-model-api";
-import { Message, USERS } from "@/lib/types";
+import { Citation, Message, Options, TextResponse, USERS } from "@/lib/types";
 import { nanoid } from "@/lib/utils";
 import React, {
   createContext,
@@ -12,7 +12,6 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-import { TasksToComplete } from "@/lib/types"; // Import types
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@clerk/nextjs";
 
@@ -21,7 +20,11 @@ interface ChatContextType {
   addMessage: (user: USERS, text: string) => void;
   clearMessages: () => void;
   isLoading: boolean;
-  tasksToComplete: TasksToComplete[];
+  tasksToComplete: { created_at: Date; tasks: [] }[];
+  options: Options[];
+  responses: { response: string; created_at: Date }[];
+  forms: { form: string; created_at: Date }[];
+  citations: Citation[];
 }
 
 // Create the context with a default value (it can be undefined initially)
@@ -34,7 +37,13 @@ export const ChatContextProvider: React.FC<{ children: ReactNode }> = ({
   const { user } = useUser();
   const { toast } = useToast();
   const [messages, setMessages] = useState<Message[]>([]);
-  const [tasksToComplete, setTasksToComplete] = useState<TasksToComplete[]>([]);
+  const [tasksToComplete, setTasksToComplete] = useState<
+    { created_at: Date; tasks: [] }[]
+  >([]);
+  const [options, setOptions] = useState<Options[]>([]);
+  const [responses, setResponses] = useState<TextResponse[]>([]);
+  const [citations, setCitations] = useState<Citation[]>([]);
+  // const [forms, setForms] = useState<{ form: string; created_at: Date }[]>([]);
 
   const { mutate, isLoading, isSuccess, data, error, isError } =
     useLanguageModelApi();
@@ -77,13 +86,40 @@ export const ChatContextProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     if (isSuccess && data) {
-      if (data.tasks_to_complete && data.tasks_to_complete.goal.length > 0) {
+      if (data.response) {
+        setResponses([
+          ...responses,
+          {
+            response: data.response,
+            created_at: new Date(),
+            role: USERS.RESPONSE,
+          },
+        ]);
+      }
+      if (data.tasks && data.tasks.length > 0) {
         setTasksToComplete([
           ...tasksToComplete,
-          { ...data.tasks_to_complete, created_at: new Date() },
+          { tasks: data.tasks, created_at: new Date() },
+        ]);
+      }
+      if (data.options) {
+        setOptions([
+          ...options,
+          { options: data.options, created_at: new Date(), role: USERS.OPTION },
         ]);
       } else {
-        addMessage(USERS.AI, data.response);
+        addMessage(USERS.AI, data.text);
+      }
+
+      if (data.citation) {
+        setCitations([
+          ...citations,
+          {
+            citation: data.citation,
+            created_at: new Date(),
+            role: USERS.CITATION,
+          },
+        ]);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -102,6 +138,10 @@ export const ChatContextProvider: React.FC<{ children: ReactNode }> = ({
         clearMessages,
         isLoading,
         tasksToComplete,
+        options,
+        responses,
+        citations,
+        forms: [],
       }}
     >
       {children}

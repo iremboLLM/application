@@ -21,7 +21,15 @@ export function Chat({ id, className, session }: ChatProps) {
   //   const router = useRouter();
   const path = usePathname();
   const [input, setInput] = useState("");
-  const { messages, isLoading, tasksToComplete } = useChatContext();
+  const {
+    messages,
+    isLoading,
+    tasksToComplete,
+    options,
+    forms,
+    responses,
+    citations,
+  } = useChatContext();
 
   const [chatId, setNewChatId] = useLocalStorage("newChatId", id);
 
@@ -51,6 +59,10 @@ export function Chat({ id, className, session }: ChatProps) {
             isShared={false}
             session={session}
             tasksToComplete={tasksToComplete}
+            options={options}
+            responses={responses}
+            forms={forms}
+            citations={citations}
           />
         ) : (
           <EmptyScreen />

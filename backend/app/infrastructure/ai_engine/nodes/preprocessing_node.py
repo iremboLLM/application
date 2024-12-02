@@ -7,6 +7,7 @@
 from langchain_openai import ChatOpenAI
 from langchain_core.runnables import Runnable, RunnableConfig
 from app.domain.models.agent_state import AgentState
+from app.domain.models.agent_response import ResponseModel
 
 from app.infrastructure.ai_engine.prompts.processing_prompt import processing_prompt
 
@@ -92,35 +93,26 @@ class ProcessingNode:
         self.runnable = runnable
 
     def __call__(self, state: AgentState, config: RunnableConfig):
-        result = self.runnable.invoke(state["messages"][-1])
-        if not isinstance(result, TaskExtractionResponse):
-            messages = state["messages"] + [
-                (
-                    "user",
-                    "Respond with a real output. and ensure you are returning the correct output object",
-                )
-            ]
-            state = {**state, "messages": messages}
-        elif result.tasks and len(result.tasks) > 0:
-            tasks = result.tasks
-            intent = result.intent
-            goal = result.goal
-
-            return {
-                **state,
-                "should_complete_tasks": True,
-                "tasks_to_complete": {"tasks": tasks, "intent": intent, "goal": goal},
-            }
-
-        return {
-            **state,
-            "should_complete_tasks": False,
-            "tasks_to_complete": {
-                "tasks": [],
-                "intent": "",
-                "goal": "",
-            },
-        }
+        while True:
+            result = self.runnable.invoke(state["messages"][-1])
+            if not isinstance(result, ResponseModel):
+                messages = state["messages"] + [
+                    (
+                        "user",
+                        "Respond with a real output. and ensure you are returning the correct output object",
+                    )
+                ]
+                state = {**state, "messages": messages}
+            else:
+                return {
+                    **state,
+                    "should_complete_tasks": False,
+                    "tasks": result.tasks if result.tasks else [],
+                    # "form": result.form if result.form else None,
+                    "options": result.options if result.options else [],
+                    "response": result.response if result.response else "",
+                    "citation": result.citation if result.citation else "",
+                }
 
     def __str__(self):
         return "SupervisorNode"
@@ -130,5 +122,5 @@ class ProcessingNode:
 
 
 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
-llm = llm.with_structured_output(TaskExtractionResponse)
+llm = llm.with_structured_output(ResponseModel)
 processing_node = ProcessingNode(processing_prompt | llm)

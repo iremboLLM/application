@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Task } from "@/lib/types"; // Import Task and related types
 import { ChevronLeft } from "lucide-react";
 import TaskListContainer from "./TaskListContainer";
 
@@ -28,7 +27,7 @@ import TaskListContainer from "./TaskListContainer";
 // };
 
 // Sidebar component to show tasks
-const Sidebar = ({ tasksToComplete }: { tasksToComplete: Task[] }) => {
+const Sidebar = ({ tasksToComplete }: { tasksToComplete: string[] }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleSidebar = () => setIsExpanded((prev) => !prev);

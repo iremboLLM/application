@@ -66,7 +66,7 @@ class AgentRunner:
             "reasoning_tools", create_tool_node_with_fallback(reasoning_tools)
         )
 
-        # self.builder.add_node("preprocessing_node", processing_node)
+        self.builder.add_node("preprocessing_node", processing_node)
 
         self.graph = None
         self.setup_graph()
@@ -118,9 +118,9 @@ class AgentRunner:
 
         self.builder.add_edge("reasoning_tools", "reasoning_node")
 
-        # self.builder.add_edge("reasoning_node", "preprocessing_node")
+        self.builder.add_edge("reasoning_node", "preprocessing_node")
 
-        self.builder.add_edge("reasoning_node", END)
+        self.builder.add_edge("preprocessing_node", END)
 
         # self.builder.add_edge("language_translation_node", END)
 

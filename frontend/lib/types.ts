@@ -27,6 +27,11 @@ export enum USERS {
   SYSTEM,
   USER,
   AI,
+  RESPONSE,
+  OPTION,
+  FORM,
+  CITATION,
+  TASK,
 }
 
 export interface Task {
@@ -36,13 +41,25 @@ export interface Task {
 }
 
 export interface TasksToComplete {
-  intent: string;
-  goal: string;
-  tasks: Task[];
+  // intent: string;
+  // goal: string;
+  // tasks: Task[];
+  tasks: [];
   created_at?: Date;
 }
 
 export interface Response {
   response: string;
-  tasks_to_complete: TasksToComplete;
+  tasks: [];
+  // form: string;
+  options: [];
+  citation: string;
+  text: string;
+  agent_mode: string;
 }
+
+export type TextResponse = { created_at: Date; response: string; role?: USERS };
+
+export type Options = { created_at: Date; options: string[]; role?: USERS };
+
+export type Citation = { created_at: Date; citation: string; role?: USERS };

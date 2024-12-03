@@ -97,7 +97,7 @@ class ProcessingNode:
 
     def __call__(self, state: AgentState, config: RunnableConfig):
         while True:
-            result = self.runnable.invoke(state["messages"])
+            result = self.runnable.invoke(state["messages"][-1])
             if not isinstance(result, ResponseModel):
                 messages = state["messages"] + [
                     (

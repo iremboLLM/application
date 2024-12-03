@@ -106,6 +106,8 @@ export const ChatContextProvider: React.FC<{ children: ReactNode }> = ({
             role: USERS.RESPONSE,
           },
         ]);
+      } else {
+        addMessage(USERS.AI, data.text);
       }
 
       if (data.form) {
@@ -126,8 +128,6 @@ export const ChatContextProvider: React.FC<{ children: ReactNode }> = ({
           ...options,
           { options: data.options, created_at: new Date(), role: USERS.OPTION },
         ]);
-      } else {
-        addMessage(USERS.AI, data.text);
       }
 
       if (data.citation) {

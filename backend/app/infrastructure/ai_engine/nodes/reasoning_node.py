@@ -19,6 +19,10 @@ from app.infrastructure.ai_engine.tools.apply_for_foreign_document_tool import (
     ApplyForForeignDocumentTool,
 )
 
+from app.infrastructure.ai_engine.tools.verify_application_status import (
+    verify_application_status_tool,
+)
+
 from app.config.settings import Settings
 
 app_setting = Settings()
@@ -68,6 +72,6 @@ class ReasoningNode:
         return "SupervisorNode"
 
 
-tools = [ApplyForForeignDocumentTool]
+tools = [ApplyForForeignDocumentTool, verify_application_status_tool]
 llm = ChatOpenAI(model_name=app_setting.OPENAI_MODEL, temperature=0)
 reasoning_node = ReasoningNode(reasoning_prompt | llm.bind_tools(tools=tools))

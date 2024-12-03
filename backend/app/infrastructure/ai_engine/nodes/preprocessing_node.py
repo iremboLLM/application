@@ -107,7 +107,6 @@ class ProcessingNode:
                 ]
                 state = {**state, "messages": messages}
             else:
-                print(result.form)
                 return {
                     **state,
                     "should_complete_tasks": False,

@@ -4,6 +4,8 @@ Returns:
     _type_: _description_
 """
 
+from uuid import uuid4
+
 from typing import List
 
 from langsmith import traceable
@@ -38,7 +40,7 @@ def apply_for_foreign_document_tool(
     first_name: str,
     last_name: str,
     passport_number: str = "012345",
-    type_of_travel_document: str = "document",
+    type_of_travel_document: str = "emergency travel documents",
     # args: dict,
 ) -> List[Document]:
     """
@@ -53,8 +55,13 @@ def apply_for_foreign_document_tool(
     Returns:
         List[Document]: A list of Document objects representing the data inserted or error details.
     """
+    print("i am hereeeeee ==========================================")
+    ID = str(uuid4())
+
+    print("============== id ==============\n", ID)
 
     if first_name is None or last_name is None:
+        print("First name and last name must be provided.")
         raise ValueError("First name and last name must be provided.")
     try:
         # Insert data into Supabase table with validated type
@@ -67,11 +74,16 @@ def apply_for_foreign_document_tool(
                         "otherName": last_name.lower(),
                         "Passportnumber": passport_number.lower(),
                         "type_of_travel_document": type_of_travel_document.lower(),
+                        "user_id": f"user_id_{ID}",
+                        "status": "pending",
+                        "billing_id": ID,
                     }
                 ]
             )
             .execute()
         )
+
+        print("============== error ================\n", data, error)
 
         # Check if error is a tuple and if it contains a non-None error
         if isinstance(error, tuple) and error[1] is not None:
@@ -82,6 +94,7 @@ def apply_for_foreign_document_tool(
             return "Unexpected response: No data returned, and no error detected."
 
     except Exception as e:
+        print("The error ===================", e)
         return f"Exception: {str(e)}"
 
 

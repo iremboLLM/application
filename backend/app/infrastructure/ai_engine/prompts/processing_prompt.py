@@ -32,13 +32,10 @@ processing_prompt = ChatPromptTemplate.from_messages(
 
             ### Response Guidelines:
 
-            - **response**: A concise reply summarizing or introducing the information in `options`, `tasks`, or `form`.
+            - **response**: A detailed explanation or summary related to the user's input or introducing the information in `options`, `tasks`, or `form`.
                 - If options are generated, the `response` should guide the user to select one.
                 - If tasks are generated, the `response` should summarize the steps or direct the user to follow them.
                 - If a form is provided, the `response` should clearly ask the user to fill out the necessary fields.
-            - **text**: A detailed explanation or summary related to the user's input.
-                - Use `text` only if the response requires a detailed explanation or narrative.
-                - Do not include `response` and `text` together in the output. Choose one based on the context.
             - **options**: A list of choices derived from the input. Empty if no options exist.
             - **tasks**: A list of actionable steps for the user. Empty if no tasks exist.
             - **form**: An object to collect information from the user, populated only when a form is required.
@@ -49,7 +46,6 @@ processing_prompt = ChatPromptTemplate.from_messages(
             ```json
             {{
               "response": "<string>",
-              "text": "<string>",
               "options": ["<string>", ...],
               "tasks": ["<string>", ...],
               "form": {{

@@ -2,7 +2,14 @@
 "use client";
 
 import { useLanguageModelApi } from "@/hooks/use-language-model-api";
-import { Citation, Message, Options, TextResponse, USERS } from "@/lib/types";
+import {
+  Citation,
+  Forms,
+  Message,
+  Options,
+  TextResponse,
+  USERS,
+} from "@/lib/types";
 import { nanoid } from "@/lib/utils";
 import React, {
   createContext,
@@ -17,13 +24,13 @@ import { useUser } from "@clerk/nextjs";
 
 interface ChatContextType {
   messages: Message[];
-  addMessage: (user: USERS, text: string) => void;
+  addMessage: (user: USERS, text: string, hidden?: boolean) => void;
   clearMessages: () => void;
   isLoading: boolean;
   tasksToComplete: { created_at: Date; tasks: [] }[];
   options: Options[];
   responses: { response: string; created_at: Date }[];
-  forms: { form: string; created_at: Date }[];
+  forms: Forms[];
   citations: Citation[];
 }
 
@@ -43,7 +50,7 @@ export const ChatContextProvider: React.FC<{ children: ReactNode }> = ({
   const [options, setOptions] = useState<Options[]>([]);
   const [responses, setResponses] = useState<TextResponse[]>([]);
   const [citations, setCitations] = useState<Citation[]>([]);
-  // const [forms, setForms] = useState<{ form: string; created_at: Date }[]>([]);
+  const [forms, setForms] = useState<Forms[]>([]);
 
   const { mutate, isLoading, isSuccess, data, error, isError } =
     useLanguageModelApi();
@@ -60,15 +67,19 @@ export const ChatContextProvider: React.FC<{ children: ReactNode }> = ({
   }, [isError, toast, error]);
 
   // Add a new message to the chat
-  const addMessage = useCallback((user: USERS, text: string) => {
-    const newMessage: Message = {
-      id: nanoid(),
-      content: text,
-      role: user,
-      created_at: new Date(),
-    };
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-  }, []);
+  const addMessage = useCallback(
+    (user: USERS, text: string, hidden: boolean = false) => {
+      const newMessage: Message = {
+        id: nanoid(),
+        content: text,
+        role: user,
+        created_at: new Date(),
+        hidden: hidden,
+      };
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    },
+    []
+  );
 
   useEffect(() => {
     if (messages.length > 0) {
@@ -96,6 +107,14 @@ export const ChatContextProvider: React.FC<{ children: ReactNode }> = ({
           },
         ]);
       }
+
+      if (data.form) {
+        setForms([
+          ...forms,
+          { form: data.form, created_at: new Date(), role: USERS.FORM },
+        ]);
+      }
+
       if (data.tasks && data.tasks.length > 0) {
         setTasksToComplete([
           ...tasksToComplete,
@@ -141,7 +160,7 @@ export const ChatContextProvider: React.FC<{ children: ReactNode }> = ({
         options,
         responses,
         citations,
-        forms: [],
+        forms,
       }}
     >
       {children}

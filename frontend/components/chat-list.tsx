@@ -8,12 +8,14 @@ import {
   TextResponse,
   Options,
   Citation,
+  Forms,
 } from "@/lib/types";
 // import { Icon } from "lucide-react";
 import Link from "next/link";
 import { BotMessage, SpinnerMessage, UserMessage } from "./messages";
 import TaskListContainer from "./TaskListContainer";
 import OptionContainer from "./option-container";
+import DynamicForm from "./dynamic-form";
 
 export interface ChatList {
   messages: Message[];
@@ -22,10 +24,54 @@ export interface ChatList {
   isLoading: boolean;
   tasksToComplete: { created_at: Date; tasks: [] }[];
   options: { options: string[]; created_at: Date }[];
-  forms: { form: string; created_at: Date }[];
   responses: { response: string; created_at: Date }[];
   citations: Citation[];
+  forms: Forms[];
 }
+
+// const formData: DynamicFormData = JSON.parse(`{
+//   "title": "User Feedback Form",
+//   "fields": [
+//     {
+//       "label": "Full Name",
+//       "type": "text",
+//       "placeholder": "Enter your full name",
+//       "required": true
+//     },
+//     {
+//       "label": "Email Address",
+//       "type": "email",
+//       "placeholder": "Enter your email address",
+//       "required": true
+//     },
+//     {
+//       "label": "Phone Number",
+//       "type": "tel",
+//       "placeholder": "Enter your phone number",
+//       "required": false
+//     },
+//     {
+//       "label": "Feedback",
+//       "type": "textarea",
+//       "placeholder": "Enter your feedback",
+//       "required": true
+//     },
+//     {
+//       "label": "Would you recommend us?",
+//       "type": "radio",
+//       "placeholder": "",
+//       "required": true,
+//       "options": ["Yes", "No"]
+//     },
+//     {
+//       "label": "Preferred Contact Method",
+//       "type": "select",
+//       "placeholder": "Choose an option",
+//       "required": false,
+//       "options": ["Email", "Phone", "Text"]
+//     }
+//   ]
+// }`);
 
 export function ChatList({
   messages,
@@ -36,6 +82,7 @@ export function ChatList({
   responses,
   options,
   citations,
+  forms,
 }: ChatList) {
   if (!messages.length) {
     return null;
@@ -47,18 +94,17 @@ export function ChatList({
     ...responses,
     ...options,
     ...citations,
+    ...forms,
   ];
 
   const sortedMergedResponses = mergedResponses.sort(
     (
-      a: Message | TasksToComplete | TextResponse | Options | Citation,
-      b: Message | TasksToComplete | TextResponse | Options | Citation
+      a: Message | TasksToComplete | TextResponse | Options | Citation | Forms,
+      b: Message | TasksToComplete | TextResponse | Options | Citation | Forms
     ) =>
       new Date(a?.created_at as Date).getTime() -
       new Date(b?.created_at as Date).getTime()
   );
-
-  console.log(sortedMergedResponses);
 
   return (
     <div className="relative mx-auto max-w-2xl px-4">
@@ -93,7 +139,8 @@ export function ChatList({
             | TasksToComplete
             | TextResponse
             | Options
-            | Citation,
+            | Citation
+            | Forms,
           index
         ) => (
           <div key={index}>
@@ -109,6 +156,10 @@ export function ChatList({
               <OptionContainer options={(message as Options)?.options} />
             )}
 
+            {(message as Forms)?.role === USERS.FORM && (
+              <DynamicForm formData={JSON.parse((message as Forms)?.form)} />
+            )}
+
             {(message as TasksToComplete)?.tasks && (
               <TaskListContainer
                 tasks={(message as TasksToComplete).tasks}
@@ -117,9 +168,10 @@ export function ChatList({
               />
             )}
 
-            {(message as Message)?.role === USERS.USER && (
-              <UserMessage>{(message as Message)?.content}</UserMessage>
-            )}
+            {(message as Message)?.role === USERS.USER &&
+              (message as Message).hidden === false && (
+                <UserMessage>{(message as Message)?.content}</UserMessage>
+              )}
 
             {(message as Citation)?.citation && (
               <p className="text-sm text-muted-foreground mt-3">

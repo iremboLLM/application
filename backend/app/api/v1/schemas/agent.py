@@ -43,7 +43,7 @@ class AgentResponse(BaseModel):
     agent_mode: Optional[str]
     response: str
     text: str
-    # form: Optional[Form] = None
+    form: Optional[str] = None
     citation: str = ""
     options: list = []
     tasks: list = []

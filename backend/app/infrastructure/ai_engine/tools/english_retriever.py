@@ -63,6 +63,11 @@ def create_vector_store() -> Chroma:
     Returns:
         Chroma: The in-memory Chroma vector store.
     """
+    # Check if vector store already contains data
+    if vector_store._collection.count() > 0:
+        print("Vector store already contains data. Skipping processing.")
+        return vector_store
+
     documents = []
     metadata = []
 

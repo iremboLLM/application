@@ -22,5 +22,5 @@ class ResponseModel(BaseModel):
     tasks: Optional[List[str]] = (
         None  # A list of tasks or steps for the user to follow.
     )
-    # form: Optional[Form] = None  # Form details if a form needs to be presented.
+    form: Optional[Form] = None  # Form details if a form needs to be presented.
     citation: Optional[str] = None  # Cite sources when applicable.

@@ -4,6 +4,9 @@
         _type_: _description_
 """
 
+import json
+from dataclasses import asdict
+
 from langchain_openai import ChatOpenAI
 from langchain_core.runnables import Runnable, RunnableConfig
 from app.domain.models.agent_state import AgentState
@@ -94,7 +97,7 @@ class ProcessingNode:
 
     def __call__(self, state: AgentState, config: RunnableConfig):
         while True:
-            result = self.runnable.invoke(state["messages"][-1])
+            result = self.runnable.invoke(state["messages"])
             if not isinstance(result, ResponseModel):
                 messages = state["messages"] + [
                     (
@@ -104,11 +107,12 @@ class ProcessingNode:
                 ]
                 state = {**state, "messages": messages}
             else:
+                print(result.form)
                 return {
                     **state,
                     "should_complete_tasks": False,
                     "tasks": result.tasks if result.tasks else [],
-                    # "form": result.form if result.form else None,
+                    "form": json.dumps(result.form.dict()) if result.form else None,
                     "options": result.options if result.options else [],
                     "response": result.response if result.response else "",
                     "citation": result.citation if result.citation else "",

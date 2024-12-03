@@ -3,6 +3,7 @@ export interface Message {
   content: string;
   role: USERS;
   created_at?: Date;
+  hidden?: boolean;
 }
 
 export interface Session {
@@ -51,7 +52,7 @@ export interface TasksToComplete {
 export interface Response {
   response: string;
   tasks: [];
-  // form: string;
+  form?: string;
   options: [];
   citation: string;
   text: string;
@@ -63,3 +64,17 @@ export type TextResponse = { created_at: Date; response: string; role?: USERS };
 export type Options = { created_at: Date; options: string[]; role?: USERS };
 
 export type Citation = { created_at: Date; citation: string; role?: USERS };
+
+export type FormField = {
+  label: string;
+  type: string;
+  placeholder: string;
+  required: boolean;
+};
+
+export type DynamicFormData = {
+  title: string;
+  fields: FormField[];
+};
+
+export type Forms = { form: string; created_at: Date; role: USERS };

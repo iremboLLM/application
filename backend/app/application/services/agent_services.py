@@ -60,7 +60,7 @@ class AgentService:
             "options": state["options"],
             "citation": state["citation"],
             "response": state["response"],
-            # "form": state["form"],
+            "form": state["form"],
             "tasks": state["tasks"],
             "messages": state["messages"],
             "text": state["messages"][-1].content,

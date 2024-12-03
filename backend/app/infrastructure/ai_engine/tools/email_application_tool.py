@@ -183,7 +183,6 @@ def send_application_document(billing_id: str, email: str) -> str:
 
         if data and len(data) > 0:
             application = data[1][0]
-            print(application)
             status = application.get("status")
 
             # Handle different statuses

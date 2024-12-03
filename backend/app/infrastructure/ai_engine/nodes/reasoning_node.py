@@ -23,6 +23,12 @@ from app.infrastructure.ai_engine.tools.verify_application_status import (
     verify_application_status_tool,
 )
 
+from app.infrastructure.ai_engine.tools.email_application_tool import (
+    send_application_document_tool,
+)
+
+from app.infrastructure.ai_engine.tools.process_payment import process_payment_tool
+
 from app.config.settings import Settings
 
 app_setting = Settings()
@@ -72,6 +78,11 @@ class ReasoningNode:
         return "SupervisorNode"
 
 
-tools = [ApplyForForeignDocumentTool, verify_application_status_tool]
+tools = [
+    ApplyForForeignDocumentTool,
+    verify_application_status_tool,
+    process_payment_tool,
+    send_application_document_tool,
+]
 llm = ChatOpenAI(model_name=app_setting.OPENAI_MODEL, temperature=0)
 reasoning_node = ReasoningNode(reasoning_prompt | llm.bind_tools(tools=tools))

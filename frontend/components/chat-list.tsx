@@ -1,3 +1,4 @@
+"use client";
 import { Separator } from "@/components/ui/separator";
 // import { UIState } from "@/lib/chat/actions";
 import {
@@ -16,6 +17,10 @@ import { BotMessage, SpinnerMessage, UserMessage } from "./messages";
 import TaskListContainer from "./TaskListContainer";
 import OptionContainer from "./option-container";
 import DynamicForm from "./dynamic-form";
+import { Loader2, ThumbsDown, ThumbsUp } from "lucide-react";
+import { supabase } from "@/app/supabaseClient";
+import { toast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 export interface ChatList {
   messages: Message[];
@@ -84,6 +89,7 @@ export function ChatList({
   citations,
   forms,
 }: ChatList) {
+  const [isLoadingReaction, setIsLoading] = useState<boolean>(false);
   if (!messages.length) {
     return null;
   }
@@ -105,6 +111,34 @@ export function ChatList({
       new Date(a?.created_at as Date).getTime() -
       new Date(b?.created_at as Date).getTime()
   );
+
+  const handleChatReaction = async (status: "like" | "dislike") => {
+    if (isLoadingReaction) {
+      return;
+    }
+    try {
+      setIsLoading(true);
+      const data = {
+        conversation: JSON.stringify({ message: sortedMergedResponses }),
+        status,
+      };
+      await supabase.from("reactions").insert(data);
+      toast({
+        title: "Success",
+        description: "Your reaction has been recorded successfully",
+        variant: "default",
+      });
+    } catch (error: unknown) {
+      console.log(error);
+      toast({
+        title: "Error",
+        description: "Failed to record your reaction",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="relative mx-auto max-w-2xl px-4">
@@ -174,7 +208,7 @@ export function ChatList({
               )}
 
             {(message as Citation)?.citation && (
-              <p className="text-sm text-muted-foreground mt-3">
+              <p className="text-sm text-muted-foreground mt-1">
                 Source: {(message as Citation)?.citation}
               </p>
             )}
@@ -183,6 +217,22 @@ export function ChatList({
           </div>
         )
       )}
+      <div className="flex justify-start items-center gap-5 mt-5">
+        <ThumbsUp
+          className="cursor-pointer h-4 w-4"
+          onClick={() => {
+            handleChatReaction("like");
+          }}
+        />
+        <ThumbsDown
+          className="cursor-pointer h-4 w-4"
+          onClick={() => {
+            handleChatReaction("dislike");
+          }}
+        />
+
+        {isLoadingReaction && <Loader2 className="animate-spin h-4 w-4" />}
+      </div>
       {isLoading && (
         <div className="mt-5">
           <SpinnerMessage />

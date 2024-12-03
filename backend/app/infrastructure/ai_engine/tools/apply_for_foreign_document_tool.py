@@ -75,7 +75,7 @@ def apply_for_foreign_document_tool(
                         "Passportnumber": passport_number.lower(),
                         "type_of_travel_document": type_of_travel_document.lower(),
                         "user_id": f"user_id_{ID}",
-                        "status": "pending",
+                        "status": "awaiting_payment",
                         "billing_id": ID,
                     }
                 ]

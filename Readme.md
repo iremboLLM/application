@@ -45,10 +45,10 @@ The Irembo LLM chatbot is designed to provide users with a seamless and efficien
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/DAMILARE1012"><img src="https://avatars.githubusercontent.com/u/DAMILARE1012?v=4?s=100" width="100px;" alt="Damilare"/><br /><sub><b>Damilare</b></sub></a><br /><a href="https://github.com/iremboLLM/application/commits?author=DAMILARE1012" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Degrandlac"><img src="https://avatars.githubusercontent.com/u/Degrandlac?v=4?s=100" width="100px;" alt="Harerimana Kevin"/><br /><sub><b>Harerimana Kevin</b></sub></a><br /><a href="https://github.com/iremboLLM/application/commits?author=Degrandlac" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Dirac156"><img src="https://avatars.githubusercontent.com/u/Dirac156?v=4?s=100" width="100px;" alt="Dirac Murairi"/><br /><sub><b>Dirac Murairi</b></sub></a><br /><a href="https://github.com/iremboLLM/application/commits?author=Dirac156" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lgihozo"><img src="https://avatars.githubusercontent.com/u/lgihozo?v=4?s=100" width="100px;" alt="lgihozo"/><br /><sub><b>lgihozo</b></sub></a><br /><a href="https://github.com/iremboLLM/application/commits?author=lgihozo" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/DAMILARE1012"><img src="https://github.com/DAMILARE1012.png" width="100px;" alt="Damilare"/><br /><sub><b>Damilare</b></sub></a><br /><a href="https://github.com/iremboLLM/application/commits?author=DAMILARE1012" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Degrandlac"><img src="https://github.com/Degrandlac.png" width="100px;" alt="Harerimana Kevin"/><br /><sub><b>Harerimana Kevin</b></sub></a><br /><a href="https://github.com/iremboLLM/application/commits?author=Degrandlac" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Dirac156"><img src="https://github.com/dirac156.png" width="100px;" alt="Dirac Murairi"/><br /><sub><b>Dirac Murairi</b></sub></a><br /><a href="https://github.com/iremboLLM/application/commits?author=Dirac156" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lgihozo"><img src="https://github.com/lgihozo.png" width="100px;" alt="lgihozo"/><br /><sub><b>lgihozo</b></sub></a><br /><a href="https://github.com/iremboLLM/application/commits?author=lgihozo" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

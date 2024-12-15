@@ -12,7 +12,9 @@
     "build:frontend": "cd frontend && yarn install && yarn build",
     "build:backend": "cd backend && python3 -m venv venv && bash -c 'source ./venv/bin/activate && pip install -r requirements.txt'",
     "build": "concurrently \"npm run build:frontend\" \"npm run build:backend\"",
-    "start": "concurrently \"npm run start-prod:backend\" \"npm run start-prod:frontend\""
+    "start": "concurrently \"npm run start-prod:backend\" \"npm run start-prod:frontend\"",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
   },
   "repository": {
     "type": "git",
@@ -29,5 +31,8 @@
   "homepage": "https://github.com/iremboLLM/application#readme",
   "dependencies": {
     "concurrently": "^8.2.2"
+  },
+  "devDependencies": {
+    "all-contributors-cli": "^6.26.1"
   }
 }

@@ -18,13 +18,7 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "*"
-        # "https://diracmurairi.me",
-        # "https://www.diracmurairi.me",
-        # "https://irembo-llm-v2.vercel.app",
-        # "https://irembo-llm-v2.vercel.app",  # Allow only this origin
-    ],  # Adjust this to restrict origins, e.g., ["https://example.com"]
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],  # Adjust to restrict methods, e.g., ["GET", "POST"]
     allow_headers=[

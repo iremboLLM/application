@@ -16,6 +16,11 @@ The Irembo LLM chatbot is designed to provide users with a seamless and efficien
 - **FAQ Support**: Find answers to common questions about Irembo services and procedures.
 - **Multilingual Support**: Communicate with the chatbot in English, French, or Kinyarwanda.
 
+**Demo**
+
+- [Applying for a Foreign Travel Document](https://www.loom.com/share/7488d4e8672e45b38a3416690859c122?sid=a118fa54-79ef-4f0d-9112-2b0093cf99c1)
+- [Checking the Status of an Application](https://www.loom.com/share/428f9899044948758ef0e1e735925e1a?sid=483dc24d-316f-4bf6-9e30-e4f322da9fd8)
+
 **How to Run the Project**
 
 1. **Prerequisites**:

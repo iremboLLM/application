@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "irembo-frontend",
       script: "npm",
-      args: "run start",
+      args: "run dev",
       cwd: "./frontend", // Set the working directory
       watch: true, // Enable watch mode
       ignore_watch: ["node_modules", "logs"], // Ignore unnecessary folders
